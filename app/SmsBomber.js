@@ -3,77 +3,57 @@
  * @flow
  */
 
-import React, { Component } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  ToastAndroid
-} from 'react-native';
-import { each, omit } from 'lodash';
-import Permissions from 'react-native-permissions';
+import React from 'react';
+import { Text, View, TouchableOpacity, ToastAndroid } from 'react-native';
 import RNSendsms from 'react-native-sendsms';
+import checkPermissionsAndRequest from './Permissions';
+import { PhoneNumber, Message } from './components';
+import Styles from './styles';
 
-class SmsBomber extends Component {
+class SmsBomber extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      phoneNumber: null,
+      message: null
+    };
+  }
+
   componentDidMount() {
-    this._checkPermissionsAndRequest(['sendSms', 'readPhoneState']);
+    checkPermissionsAndRequest(['sendSms', 'readPhoneState']);
   }
 
-  _checkPermissionsAndRequest = (permissions) => { 
-    if(!permissions.length) return;
-    const proms = [];
-    const permissionsToOmit = [];
-
-    Permissions.checkMultiple(permissions).then( checkResponse => {
-      each(checkResponse, (response, permission) => {
-        if( response !== "authorized" ) {
-          proms.push(Permissions.check(permission));
-        } else {
-          permissionsToOmit.push(permissionsToOmit);
-        }
-      });
-
-      if( proms.length ) {
-        _checkPermissionsAndRequest(omit(permissions, permissionsToOmit));
+  _sendSms = () => {
+    RNSendsms.send(
+      Date.now(),
+      this.state.phoneNumber,
+      this.state.message,
+      (msgId, status) => {
+        ToastAndroid.show(JSON.stringify(status), ToastAndroid.SHORT);
       }
-    });
-  }
-  
+    );
+  };
+
+  _updatePhoneNumber = phoneNumber => {
+    this.setState({ phoneNumber });
+  };
+
+  _updateMessage = message => {
+    this.setState({ message });
+    console.log(this.state);
+  };
+
   render() {
     return (
-      <View style={styles.container}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => {
-            // ToastAndroid.show( Object.keys(RNSendsms).join(','), ToastAndroid.LONG);
-            RNSendsms.send(123, '0749044766', 'test', (msgId, status) => {
-              ToastAndroid.show(JSON.stringify(status), ToastAndroid.SHORT);
-            });
-          }}
-        >
-          <Text>Send SMS111</Text>
+      <View style={Styles.container}>
+        <PhoneNumber updatePhoneNumber={this._updatePhoneNumber} />
+        <Message updateMessage={this._updateMessage} />
+        <TouchableOpacity style={Styles.button} onPress={this._sendSms}>
+          <Text>Start Bomber</Text>
         </TouchableOpacity>
       </View>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF'
-  },
-  button: {
-    padding: 10,
-    borderWidth: 0.5,
-    borderColor: '#bbb',
-    margin: 10,
-    alignItems: 'center',
-    justifyContent: 'center'
-  }
-});
 
 export default SmsBomber;
