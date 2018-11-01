@@ -7,6 +7,6 @@ export default {
     fontWeight: 'bold',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#222'
+    backgroundColor: '#FFF'
   }
 }
