@@ -6,7 +6,6 @@
 import React from 'react';
 import { Text, View, TouchableOpacity, Slider } from 'react-native';
 import RNSendsms from 'react-native-sendsms';
-import * as uuid from 'uuid';
 import { isNull } from 'lodash';
 import checkPermissionsAndRequest from './Permissions';
 import { PhoneNumber, Message } from './components';
@@ -19,9 +18,9 @@ class SmsBomber extends React.Component {
       phoneNumber: '0749044766',
       message: 'test',
       amount: 1,
+      delay: 2,
       started: false
     };
-    this._interval = null;
   }
 
   componentDidMount() {
@@ -29,30 +28,34 @@ class SmsBomber extends React.Component {
   }
 
   _sendSms = () => {
-    if (
-      this.state.phoneNumber.trim().length &&
-      this.state.message.trim().length &&
-      this.state.amount > 0
-    ) {
-      console.log("here?", this.state);
-      RNSendsms.send(
-        Date.now(),
-        this.state.phoneNumber,
-        this.state.message,
-        (msgId, status) => {
-          console.log(msgId, status);
-          this.setState((prevState) => ({
-            amount: prevState.amount - 1
-          }), () => this._sendSms);
-        }
-      );
-    } else {
-      console.log('ended');
-      this.setState({ 
-        amount: 1,
-        started: false 
-      });
-    }
+    setTimeout(() => {
+      if (
+        this.state.phoneNumber.trim().length &&
+        this.state.message.trim().length &&
+        this.state.started &&
+        this.state.amount > 0
+      ) {
+        RNSendsms.send(
+          Date.now(),
+          this.state.phoneNumber,
+          this.state.message,
+          (msgId, status) => {
+            console.log(msgId, status);
+            this.setState(
+              prevState => ({
+                amount: prevState.amount - 1
+              }),
+              () => this._sendSms
+            );
+          }
+        );
+      } else {
+        this.setState({
+          amount: 1,
+          started: false
+        });
+      }
+    }, this.state.delay * 1000);
   };
 
   _updatePhoneNumber = phoneNumber => {
@@ -64,8 +67,11 @@ class SmsBomber extends React.Component {
   };
 
   _updateAmount = amount => {
-    console.log(amount);
     this.setState({ amount });
+  };
+
+  _updateDelay = delay => {
+    this.setState({ delay });
   };
 
   _toggleBomber = () => {
@@ -75,7 +81,7 @@ class SmsBomber extends React.Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.state.started && isNull(this._interval)) {
+    if (this.state.started) {
       this._sendSms();
     }
   }
@@ -93,11 +99,21 @@ class SmsBomber extends React.Component {
         />
         <Text>Amount: {this.state.amount}</Text>
         <Slider
+          style={Styles.slider}
           minimumValue={1}
-          maximumValue={10}
+          maximumValue={999}
           step={1}
           value={this.state.amount}
           onValueChange={this._updateAmount}
+        />
+        <Text>Delay: {this.state.delay} seconds</Text>
+        <Slider
+          style={Styles.slider}
+          minimumValue={2}
+          maximumValue={100}
+          step={2}
+          value={this.state.delay}
+          onValueChange={this._updateDelay}
         />
 
         <TouchableOpacity style={Styles.button} onPress={this._toggleBomber}>

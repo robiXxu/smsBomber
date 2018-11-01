@@ -4,6 +4,7 @@ export default {
     borderWidth: 1,
     borderColor: '#bbb',
     margin: 10,
+    fontSize: 14,
     fontWeight: 'bold',
     alignItems: 'center',
     justifyContent: 'center',
