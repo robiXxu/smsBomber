@@ -4,11 +4,19 @@
  */
 
 import React from 'react';
-import { Text, View, TouchableOpacity, Slider } from 'react-native';
+import Slider from 'react-native-slider';
 import RNSendsms from 'react-native-sendsms';
 import checkPermissionsAndRequest from '../Permissions';
-import { PhoneNumber, Message } from '../components';
-import Styles from '../styles';
+import {
+  Container,
+  Content,
+  Button,
+  Text,
+  Input,
+  Label,
+  Item,
+  Form
+} from 'native-base';
 
 class SmsBomber extends React.Component {
   constructor(props) {
@@ -57,19 +65,19 @@ class SmsBomber extends React.Component {
     }, this.state.delay * 1000);
   };
 
-  _updatePhoneNumber = phoneNumber => {
+  _onPhoneNumberChange = phoneNumber => {
     this.setState({ phoneNumber });
   };
 
-  _updateMessage = message => {
+  _onMessageChange = message => {
     this.setState({ message });
   };
 
-  _updateAmount = amount => {
+  _onAmountChange = amount => {
     this.setState({ amount });
   };
 
-  _updateDelay = delay => {
+  _onDelayChange = delay => {
     this.setState({ delay });
   };
 
@@ -87,38 +95,54 @@ class SmsBomber extends React.Component {
 
   render() {
     return (
-      <View style={Styles.container}>
-        <PhoneNumber
-          initialValue={this.state.phoneNumber}
-          updatePhoneNumber={this._updatePhoneNumber}
-        />
-        <Message
-          initialValue={this.state.message}
-          updateMessage={this._updateMessage}
-        />
-        <Text>Amount: {this.state.amount}</Text>
-        <Slider
-          style={Styles.slider}
-          minimumValue={1}
-          maximumValue={999}
-          step={1}
-          value={this.state.amount}
-          onValueChange={this._updateAmount}
-        />
-        <Text>Delay: {this.state.delay} seconds</Text>
-        <Slider
-          style={Styles.slider}
-          minimumValue={2}
-          maximumValue={100}
-          step={2}
-          value={this.state.delay}
-          onValueChange={this._updateDelay}
-        />
-
-        <TouchableOpacity style={Styles.button} onPress={this._toggleBomber}>
-          <Text>{this.state.started ? 'Stop' : 'Start'} Bomber</Text>
-        </TouchableOpacity>
-      </View>
+      <Container>
+        <Content padder>
+          <Form>
+            <Item floatingLabel last>
+              <Label>Phone Number:</Label>
+              <Input
+                value={this.state.phoneNumber}
+                onChangeText={this._onPhoneNumberChange}
+                keyboardType="numeric"
+              />
+            </Item>
+            <Item floatingLabel last>
+              <Label>Message</Label>
+              <Input
+                value={this.state.message}
+                onChangeText={this._onMessageChange}
+              />
+            </Item>
+          </Form>
+          <Container style={{ height: 80 }}>
+            <Content padder>
+              <Label>Amount: {this.state.amount}</Label>
+              <Slider
+                step={1}
+                minimumValue={1}
+                maximumValue={999}
+                onValueChange={this._onAmountChange}
+                value={this.state.amount}
+              />
+            </Content>
+          </Container>
+          <Container style={{ height: 80 }}>
+            <Content padder>
+              <Label>Delay: {this.state.delay}</Label>
+              <Slider
+                step={2}
+                minimumValue={2}
+                maximumValue={30}
+                onValueChange={this._onDelayChange}
+                value={this.state.delay}
+              />
+            </Content>
+          </Container>
+          <Button full info onPress={this._toggleBomber}>
+            <Text>{this.state.started ? 'Stop' : 'Start'} Bomber</Text>
+          </Button>
+        </Content>
+      </Container>
     );
   }
 }
