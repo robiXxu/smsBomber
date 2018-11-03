@@ -22,8 +22,8 @@ class SmsBomber extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      phoneNumber: '0749044766',
-      message: 'test',
+      phoneNumber: '',
+      message: '',
       amount: 1,
       delay: 2,
       started: false
@@ -104,7 +104,7 @@ class SmsBomber extends React.Component {
                 maxLength={15}
                 value={this.state.phoneNumber}
                 onChangeText={this._onPhoneNumberChange}
-                keyboardType="numeric"
+                keyboardType  ="numeric"
               />
             </Item>
             <Item floatingLabel last>
