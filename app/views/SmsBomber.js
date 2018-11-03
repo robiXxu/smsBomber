@@ -6,9 +6,9 @@
 import React from 'react';
 import { Text, View, TouchableOpacity, Slider } from 'react-native';
 import RNSendsms from 'react-native-sendsms';
-import checkPermissionsAndRequest from './Permissions';
-import { PhoneNumber, Message } from './components';
-import Styles from './styles';
+import checkPermissionsAndRequest from '../Permissions';
+import { PhoneNumber, Message } from '../components';
+import Styles from '../styles';
 
 class SmsBomber extends React.Component {
   constructor(props) {
