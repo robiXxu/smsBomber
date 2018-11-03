@@ -101,6 +101,7 @@ class SmsBomber extends React.Component {
             <Item floatingLabel last>
               <Label>Phone Number:</Label>
               <Input
+                maxLength={15}
                 value={this.state.phoneNumber}
                 onChangeText={this._onPhoneNumberChange}
                 keyboardType="numeric"
