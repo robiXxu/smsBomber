@@ -89,6 +89,8 @@ class SmsBomber extends React.Component {
     }
   }
 
+  _isSendingButtonDisabled = () => this.state.phoneNumber.trim().length == 0 && this.state.message.trim().length == 0;
+
   render() {
     return (
       <Container>
@@ -136,7 +138,7 @@ class SmsBomber extends React.Component {
               />
             </Content>
           </Container>
-          <Button full info onPress={this._toggleBomber}>
+          <Button disabled={this._isSendingButtonDisabled()} full info onPress={this._toggleBomber}>
             <Text>{this.state.started ? 'Stop' : 'Start'} Bomber</Text>
           </Button>
         </Content>
