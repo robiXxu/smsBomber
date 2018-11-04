@@ -6,7 +6,7 @@
 import React from 'react';
 import Slider from 'react-native-slider';
 import RNSendsms from 'react-native-sendsms';
-import checkPermissionsAndRequest from '../Permissions';
+import PermissionsCheck from '../PermissionsCheck';
 import {
   Container,
   Content,
@@ -28,10 +28,6 @@ class SmsBomber extends React.Component {
       delay: 2,
       started: false
     };
-  }
-
-  componentDidMount() {
-    checkPermissionsAndRequest(['sendSms', 'readPhoneState']);
   }
 
   _sendSms = () => {
@@ -96,6 +92,7 @@ class SmsBomber extends React.Component {
   render() {
     return (
       <Container>
+        <PermissionsCheck />
         <Content padder>
           <Form>
             <Item floatingLabel last>
