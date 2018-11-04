@@ -1,4 +1,4 @@
-package com.smsbomber;
+package com.robixxu.smsbomber;
 
 import com.facebook.react.ReactActivity;
 
