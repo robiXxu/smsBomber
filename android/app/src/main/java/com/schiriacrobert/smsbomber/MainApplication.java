@@ -1,4 +1,4 @@
-package com.robixxu.smsbomber;
+package com.schiriacrobert.smsbomber;
 
 import android.app.Application;
 
@@ -8,7 +8,6 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
-import com.robixxu.smsbomber.BuildConfig;
 
 import java.util.Arrays;
 import java.util.List;

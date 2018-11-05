@@ -1,19 +1,23 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.robixxu.smsbomber">
+    package="com.schiriacrobert.smsbomber"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission tools:node="remove" android:name="android.permission.INTERNET" />
+    <uses-permission tools:node="remove" android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission tools:node="remove" android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    
 
     <application
-      android:name="com.robixxu.smsbomber.MainApplication"
+      android:name="com.schiriacrobert.smsbomber.MainApplication"
       android:label="@string/app_name"
       android:icon="@mipmap/ic_launcher"
       android:allowBackup="false"
       android:theme="@style/AppTheme">
       <activity
-        android:name="com.robixxu.smsbomber.MainActivity"
+        android:name="com.schiriacrobert.smsbomber.MainActivity"
         android:label="@string/app_name"
         android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
         android:windowSoftInputMode="adjustResize">
